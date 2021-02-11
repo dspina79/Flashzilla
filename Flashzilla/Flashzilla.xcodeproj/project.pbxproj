@@ -12,6 +12,8 @@
 		55D4546F25D324710043370C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55D4546E25D324710043370C /* Assets.xcassets */; };
 		55D4547225D324710043370C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55D4547125D324710043370C /* Preview Assets.xcassets */; };
 		55D4547B25D3737B0043370C /* GestureExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D4547A25D3737B0043370C /* GestureExampleView.swift */; };
+		55D4547E25D4BD3E0043370C /* HapticsExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D4547D25D4BD3E0043370C /* HapticsExampleView.swift */; };
+		55D4548125D4C1FA0043370C /* HitTestingExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D4548025D4C1FA0043370C /* HitTestingExampleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		55D4547125D324710043370C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		55D4547325D324710043370C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55D4547A25D3737B0043370C /* GestureExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureExampleView.swift; sourceTree = "<group>"; };
+		55D4547D25D4BD3E0043370C /* HapticsExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsExampleView.swift; sourceTree = "<group>"; };
+		55D4548025D4C1FA0043370C /* HitTestingExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitTestingExampleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +64,8 @@
 				55D4547325D324710043370C /* Info.plist */,
 				55D4547025D324710043370C /* Preview Content */,
 				55D4547A25D3737B0043370C /* GestureExampleView.swift */,
+				55D4547D25D4BD3E0043370C /* HapticsExampleView.swift */,
+				55D4548025D4C1FA0043370C /* HitTestingExampleView.swift */,
 			);
 			path = Flashzilla;
 			sourceTree = "<group>";
@@ -141,8 +147,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55D4548125D4C1FA0043370C /* HitTestingExampleView.swift in Sources */,
 				55D4546D25D3246D0043370C /* ContentView.swift in Sources */,
 				55D4546B25D3246D0043370C /* FlashzillaApp.swift in Sources */,
+				55D4547E25D4BD3E0043370C /* HapticsExampleView.swift in Sources */,
 				55D4547B25D3737B0043370C /* GestureExampleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,23 +8,36 @@
 import SwiftUI
 
 struct GestureExampleView: View {
-    @State private var currentAmount: CGFloat = 0
-    @State private var finalAmount: CGFloat = 1
+    @State private var offset = CGSize.zero
+    @State private var isDragging = false
     
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-            .scaleEffect(finalAmount + currentAmount)
-            .gesture(
-                MagnificationGesture()
-                    .onChanged {amount in
-                        self.currentAmount = amount - 1
-                    }
-                    .onEnded { amount in
-                        self.finalAmount += self.currentAmount
-                        self.currentAmount = 0
-                    }
-            )
+        let dragGesture = DragGesture()
+        .onChanged { value in
+                    self.offset = value.translation
+                }
+        .onEnded { _ in
+                withAnimation {
+                    self.offset = CGSize.zero
+                    self.isDragging = false
+                }
+            }
+        let pressGesture = LongPressGesture()
+            .onEnded { _ in
+                withAnimation {
+                    self.isDragging = true
+                }
+            }
+        
+        let combined = pressGesture.sequenced(before: dragGesture)
+        
+        return Circle()
+            .fill(Color.red)
+            .frame(width: 64, height: 64)
+            .scaleEffect(isDragging ? 1.5 : 1)
+            .offset(offset)
+            .gesture(combined)
     }
 }
 
