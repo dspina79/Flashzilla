@@ -25,12 +25,20 @@ struct ContentView: View {
             VStack {
                 ZStack {
                     ForEach(0..<cards.count, id: \.self) {index in
-                        CardView(card: cards[index])
-                            .stacked(at: index, in: cards.count)
+                        CardView(card: cards[index], removal: {
+                            withAnimation {
+                                self.removeCard(at: index)
+                            }
+                        })
+                        .stacked(at: index, in: cards.count)
                     }
                 }
             }
         }
+    }
+    
+    func removeCard(at index: Int) {
+        self.cards.remove(at: index)
     }
 }
 
