@@ -17,6 +17,8 @@
 		55D4548425D6157A0043370C /* TimerExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D4548325D6157A0043370C /* TimerExampleView.swift */; };
 		55D4548725D617EA0043370C /* MoveToBackgroundExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D4548625D617EA0043370C /* MoveToBackgroundExampleView.swift */; };
 		55D4548A25D61EC40043370C /* AccessibilitySettingReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D4548925D61EC40043370C /* AccessibilitySettingReviewView.swift */; };
+		55D4548D25D817960043370C /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D4548C25D817960043370C /* Card.swift */; };
+		55D4549025D818C80043370C /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D4548F25D818C80043370C /* CardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		55D4548325D6157A0043370C /* TimerExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerExampleView.swift; sourceTree = "<group>"; };
 		55D4548625D617EA0043370C /* MoveToBackgroundExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToBackgroundExampleView.swift; sourceTree = "<group>"; };
 		55D4548925D61EC40043370C /* AccessibilitySettingReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilitySettingReviewView.swift; sourceTree = "<group>"; };
+		55D4548C25D817960043370C /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		55D4548F25D818C80043370C /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +79,8 @@
 				55D4548325D6157A0043370C /* TimerExampleView.swift */,
 				55D4548625D617EA0043370C /* MoveToBackgroundExampleView.swift */,
 				55D4548925D61EC40043370C /* AccessibilitySettingReviewView.swift */,
+				55D4548C25D817960043370C /* Card.swift */,
+				55D4548F25D818C80043370C /* CardView.swift */,
 			);
 			path = Flashzilla;
 			sourceTree = "<group>";
@@ -157,8 +163,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				55D4548125D4C1FA0043370C /* HitTestingExampleView.swift in Sources */,
+				55D4548D25D817960043370C /* Card.swift in Sources */,
 				55D4548425D6157A0043370C /* TimerExampleView.swift in Sources */,
 				55D4548A25D61EC40043370C /* AccessibilitySettingReviewView.swift in Sources */,
+				55D4549025D818C80043370C /* CardView.swift in Sources */,
 				55D4546D25D3246D0043370C /* ContentView.swift in Sources */,
 				55D4548725D617EA0043370C /* MoveToBackgroundExampleView.swift in Sources */,
 				55D4546B25D3246D0043370C /* FlashzillaApp.swift in Sources */,

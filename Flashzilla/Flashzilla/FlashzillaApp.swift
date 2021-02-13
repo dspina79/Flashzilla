@@ -12,7 +12,7 @@ struct FlashzillaApp: App {
     
     var body: some Scene {
         WindowGroup {
-            AccessibilitySettingReviewView()
+            ContentView()
         }
     }
 }
