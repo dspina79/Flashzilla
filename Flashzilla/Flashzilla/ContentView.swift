@@ -19,6 +19,8 @@ struct ContentView: View {
     @Environment(\.accessibilityEnabled) var accessibilityEnabled
     @State private var isActive = true
     @State private var timeRemaining = 100
+    @State private var showingEditScreen = false
+    
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     @State private var cards = [Card](repeating: Card.example, count: 10)
@@ -58,6 +60,26 @@ struct ContentView: View {
                         .clipShape(Capsule())
                 }
             }
+            
+            VStack {
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        self.showingEditScreen = true
+                    }) {
+                        Image(systemName: "plus.circle")
+                            .padding()
+                            .background(Color.black.opacity(0.7))
+                            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                    }
+                    .accessibility(label: Text("Add Card"))
+                    .accessibility(hint: Text("Adds a card to your collection."))
+                    Spacer()
+                }
+            }
+            .foregroundColor(.white)
+            .font(.largeTitle)
+            .padding()
             
             if differentiateWithoutColor || accessibilityEnabled {
                 VStack {

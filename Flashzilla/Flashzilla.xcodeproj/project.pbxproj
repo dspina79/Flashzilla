@@ -19,6 +19,7 @@
 		55D4548A25D61EC40043370C /* AccessibilitySettingReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D4548925D61EC40043370C /* AccessibilitySettingReviewView.swift */; };
 		55D4548D25D817960043370C /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D4548C25D817960043370C /* Card.swift */; };
 		55D4549025D818C80043370C /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D4548F25D818C80043370C /* CardView.swift */; };
+		55D4549425DB0A460043370C /* EditCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D4549325DB0A460043370C /* EditCardsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		55D4548925D61EC40043370C /* AccessibilitySettingReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilitySettingReviewView.swift; sourceTree = "<group>"; };
 		55D4548C25D817960043370C /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		55D4548F25D818C80043370C /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		55D4549325DB0A460043370C /* EditCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 				55D4548925D61EC40043370C /* AccessibilitySettingReviewView.swift */,
 				55D4548C25D817960043370C /* Card.swift */,
 				55D4548F25D818C80043370C /* CardView.swift */,
+				55D4549325DB0A460043370C /* EditCardsView.swift */,
 			);
 			path = Flashzilla;
 			sourceTree = "<group>";
@@ -166,6 +169,7 @@
 				55D4548D25D817960043370C /* Card.swift in Sources */,
 				55D4548425D6157A0043370C /* TimerExampleView.swift in Sources */,
 				55D4548A25D61EC40043370C /* AccessibilitySettingReviewView.swift in Sources */,
+				55D4549425DB0A460043370C /* EditCardsView.swift in Sources */,
 				55D4549025D818C80043370C /* CardView.swift in Sources */,
 				55D4546D25D3246D0043370C /* ContentView.swift in Sources */,
 				55D4548725D617EA0043370C /* MoveToBackgroundExampleView.swift in Sources */,
