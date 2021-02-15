@@ -12,6 +12,7 @@ struct EditCardsView: View {
     @State private var cards = [Card]()
     @State private var newPrompt = ""
     @State private var newAnswer = ""
+    static var FLASH_KEY = "flashdata"
     
     var body: some View {
         NavigationView {
@@ -39,26 +40,46 @@ struct EditCardsView: View {
             .listStyle(GroupedListStyle())
             .onAppear(perform: loadData)
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 
     func loadData() {
-        // TODO: Implement
+        if let data = UserDefaults.standard.data(forKey: Self.FLASH_KEY) {
+            if let decoded = try? JSONDecoder().decode([Card].self, from: data) {
+                self.cards = decoded
+            }
+        }
+    }
+    
+    func saveData() {
+        if let data = try? JSONEncoder().encode(self.cards) {
+            UserDefaults.standard.set(data, forKey: Self.FLASH_KEY)
+        }
     }
     
     func dismiss() {
         self.presentationMode.wrappedValue.dismiss()
     }
     
-    func removeCards(indexSet: IndexSet) {
-        // TODO: implements
+    func removeCards(at offset: IndexSet) {
+        cards.remove(atOffsets: offset)
+        saveData()
     }
     
     func addCard() {
-        let card = Card(prompt: self.newPrompt, answer: self.newAnswer)
+        let trimmedPrompt = self.newPrompt.trimmingCharacters(in: .whitespaces)
+        let trimmedAnswer = self.newAnswer.trimmingCharacters(in: .whitespaces)
+        
+        
+        guard !trimmedPrompt.isEmpty && !trimmedAnswer.isEmpty else { return }
+            
+        let card = Card(prompt: trimmedPrompt, answer: trimmedAnswer)
         cards.append(card)
         
         self.newAnswer = ""
         self.newPrompt = ""
+        
+        saveData()
     }
 }
 

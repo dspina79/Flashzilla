@@ -23,14 +23,37 @@ struct ContentView: View {
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
-    @State private var cards = [Card](repeating: Card.example, count: 10)
+    @State private var cards = [Card]()
     var body: some View {
         ZStack {
             Image(decorative: "background")
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+            
+            
             VStack {
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        self.showingEditScreen = true
+                    }) {
+                        Image(systemName: "plus.circle")
+                            .padding()
+                            .background(Color.black.opacity(0.7))
+                            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                    }
+                    .accessibility(label: Text("Add Card"))
+                    .accessibility(hint: Text("Adds a card to your collection."))
+                    Spacer()
+                }
+            }
+            .foregroundColor(.white)
+            .font(.largeTitle)
+            .padding()
+            
+            VStack {
+                
                 Text("Time:  \(timeRemaining)")
                     .font(.largeTitle)
                     .foregroundColor(.white)
@@ -61,25 +84,6 @@ struct ContentView: View {
                 }
             }
             
-            VStack {
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        self.showingEditScreen = true
-                    }) {
-                        Image(systemName: "plus.circle")
-                            .padding()
-                            .background(Color.black.opacity(0.7))
-                            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                    }
-                    .accessibility(label: Text("Add Card"))
-                    .accessibility(hint: Text("Adds a card to your collection."))
-                    Spacer()
-                }
-            }
-            .foregroundColor(.white)
-            .font(.largeTitle)
-            .padding()
             
             if differentiateWithoutColor || accessibilityEnabled {
                 VStack {
@@ -133,10 +137,22 @@ struct ContentView: View {
                 self.isActive = true
             }
         })
+        .sheet(isPresented: $showingEditScreen, onDismiss: resetCards) {
+            EditCardsView()
+        }
+        .onAppear(perform: resetCards)
+    }
+    
+    func loadData() {
+        if let data = UserDefaults.standard.data(forKey: EditCardsView.FLASH_KEY) {
+            if let decoded = try? JSONDecoder().decode([Card].self, from: data) {
+                self.cards = decoded
+            }
+        }
     }
     
     func resetCards() {
-        cards = [Card](repeating: Card.example, count: 10)
+        loadData()
         timeRemaining = 100
         isActive = true
     }
