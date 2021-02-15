@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CardView: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
+    @State private var feedback = UINotificationFeedbackGenerator()
     let card: Card
     
     @State private var isShowingAnswer = false
@@ -21,7 +22,7 @@ struct CardView: View {
                     differentiateWithoutColor ? Color.white :
                     Color.white.opacity(1 - Double(abs(offset.width/50))))
                 .background(
-                    differentiateWithoutColor ? nil : 
+                    differentiateWithoutColor ? nil :
                     RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/, style: .continuous)
                             .fill(offset.width > 0 ? Color.green : Color.red)
                     )
@@ -46,10 +47,16 @@ struct CardView: View {
         .gesture (
             DragGesture()
                 .onChanged { gesture in
+                    self.feedback.prepare()
                     self.offset = gesture.translation
                 }
                 .onEnded { _ in
                     if (abs(self.offset.width) > 100) {
+                        if self.offset.width > 0 {
+                            self.feedback.notificationOccurred(.success)
+                        } else {
+                            self.feedback.notificationOccurred(.error)
+                        }
                         self.removal?()
                     } else {
                         self.offset = .zero
