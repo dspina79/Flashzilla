@@ -32,35 +32,31 @@ struct ContentView: View {
                 .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             
             
+            
             VStack {
+               
                 HStack {
-                    Spacer()
+                    Text("Time:  \(timeRemaining)")
+                        .font(.largeTitle)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 5)
+                        .background(Capsule().fill(Color.black)
+                                        .opacity(0.75))
+               
                     Button(action: {
                         self.showingEditScreen = true
                     }) {
                         Image(systemName: "plus.circle")
-                            .padding()
+                            .padding(10)
                             .background(Color.black.opacity(0.7))
                             .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                     }
+                    .foregroundColor(.white)
                     .accessibility(label: Text("Add Card"))
                     .accessibility(hint: Text("Adds a card to your collection."))
-                    Spacer()
                 }
-            }
-            .foregroundColor(.white)
-            .font(.largeTitle)
-            .padding()
-            
-            VStack {
                 
-                Text("Time:  \(timeRemaining)")
-                    .font(.largeTitle)
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 5)
-                    .background(Capsule().fill(Color.black)
-                                    .opacity(0.75))
                 ZStack {
                     ForEach(0..<cards.count, id: \.self) {index in
                         CardView(card: cards[index], removal: {
