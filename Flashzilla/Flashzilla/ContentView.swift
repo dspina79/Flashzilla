@@ -17,8 +17,10 @@ extension View {
 struct ContentView: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     @Environment(\.accessibilityEnabled) var accessibilityEnabled
+    @State private var feedback = UINotificationFeedbackGenerator()
     @State private var isActive = true
     @State private var timeRemaining = 100
+    @State private var isTimerBuzzer = true
     @State private var showingEditScreen = false
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -30,19 +32,21 @@ struct ContentView: View {
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-            
-            
-            
+
             VStack {
-               
                 HStack {
-                    Text("Time:  \(timeRemaining)")
+                    Text(timeRemaining > 0 ? "Time:  \(timeRemaining)" : "Time's Up!")
                         .font(.largeTitle)
                         .foregroundColor(.white)
                         .padding(.horizontal, 20)
                         .padding(.vertical, 5)
                         .background(Capsule().fill(Color.black)
-                                        .opacity(0.75))
+                        .opacity(0.75))
+                        .onTapGesture(perform: {
+                            if self.timeRemaining == 0 {
+                                self.resetCards()
+                            }
+                        })
                
                     Button(action: {
                         self.showingEditScreen = true
@@ -118,9 +122,15 @@ struct ContentView: View {
             }
         }.onReceive(timer) {timer in
             guard self.isActive else { return }
-            
+            self.feedback.prepare()
             if self.timeRemaining > 0 {
+                self.isTimerBuzzer = true
                 self.timeRemaining -= 1
+            } else {
+                if self.isTimerBuzzer {
+                    self.feedback.notificationOccurred(.warning)
+                    self.isTimerBuzzer = false
+                }
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) {_ in
