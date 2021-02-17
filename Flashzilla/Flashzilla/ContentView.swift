@@ -25,6 +25,7 @@ struct ContentView: View {
     @State private var showingEditScreen = false
     @State private var moveWrongAnswerBack = false
     @State private var isShowingSettingsSheet = false
+    @State private var cardsCount = 0
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
@@ -79,27 +80,29 @@ struct ContentView: View {
                 }
                 
                 ZStack {
-                    ForEach(self.cards) {card in
-                        CardView(card: card,
-                        removal: {
-                            withAnimation {
-                                self.removeCard(with: card, isWrong: false)
-                            }
-                        },
-                        removalWrong: {
-                            if self.moveWrongAnswerBack {
-                                self.removeCard(with: card, isWrong: true)
-                                return
-                            }
-                            withAnimation {
-                                self.removeCard(with: card, isWrong: true)
-                            }
-                        })
-                        .stacked(at: self.getCardIndex(for: card), in: self.cards.count)
-                        .allowsHitTesting(self.getCardIndex(for: card) == self.cards.count - 1)
-                        .accessibility(hidden: self.getCardIndex(for: card) < self.cards.count - 1)
-                    }
-                }
+                    ForEach(0..<self.cardsCount, id:\.self) {index in
+                        VStack {
+                           CardView(card: self.cards[index],
+                            removal: {
+                                withAnimation {
+                                    self.removeCard(at: index, isWrong: false)
+                                }
+                            },
+                            removalWrong: {
+                                withAnimation {
+                                    self.removeCard(at: index, isWrong: true)
+                                    
+                                }
+                            })
+                        }
+                            .stacked(at: index, in: self.cardsCount)
+                            .allowsHitTesting(index == self.cards.count - 1)
+                            .accessibility(hidden: index < self.cards.count - 1)
+                    }.id(self.cards)
+                    
+                
+            }
+                // end of ZStack
                 .allowsHitTesting(timeRemaining > 0)
                 
                 if cards.count == 0 {
@@ -121,7 +124,7 @@ struct ContentView: View {
                         Button(action: {
                             
                             withAnimation {
-                                self.removeCard(with: self.cards[self.cards.count - 1], isWrong: true)
+                                self.removeCard(at: self.cards.count - 1, isWrong: true)
                             }
                         }) {
                             Image(systemName: "xmark.circle")
@@ -135,7 +138,7 @@ struct ContentView: View {
                         
                         Button(action: {
                             withAnimation {
-                                self.removeCard(with: self.cards[self.cards.count - 1], isWrong: false)
+                                self.removeCard(at: self.cards.count - 1, isWrong: false)
                             }
                         }) {
                             Image(systemName: "checkmark.circle")
@@ -212,6 +215,7 @@ struct ContentView: View {
                 self.cards = decoded
             }
         }
+        self.cardsCount = self.cards.count
         self.loadSettings()
     }
     
@@ -222,25 +226,29 @@ struct ContentView: View {
     }
     
     func getCardIndex(for card: Card) -> Int {
-        return self.cards.lastIndex(where: {$0.id == card.id}) ?? 0
+        return self.cards.firstIndex(where: {$0.id == card.id}) ?? 0
     }
     
-    func removeCard(with card: Card, isWrong: Bool) {
+    func removeCard(at index: Int, isWrong: Bool) {
         print("Old cards count: \(self.cards.count)")
-        guard self.cards.contains(card) else { return }
-        let cardCopy = card
-        
-        self.cards.remove(at: self.getCardIndex(for: card))
+        guard index >= 0 else { return }
+        let cardCopy = self.cards[index]
+            print("Index is: \(index). Count is \(self.cards.count)")
         if self.moveWrongAnswerBack && isWrong {
-            print("Inserting card with answer \(cardCopy.answer) at 0.")
-            self.cards.insert(cardCopy, at: 0)
+            if self.cards.count > 1 {
+                self.cards.insert(cardCopy, at: 0)
+                self.cards.remove(at: self.cards.count - 1)
+            } else {
+                self.cards.append(cardCopy)
+            }
+        } else {
+            self.cards.remove(at: index)
         }
-        
         print("New Cards count: \(self.cards.count)\n\n")
         if self.cards.count == 0 {
                 self.isActive = false
         }
-        
+        self.cardsCount = self.cards.count
         printListing()
         
     }

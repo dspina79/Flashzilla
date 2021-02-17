@@ -12,7 +12,7 @@ struct CardView: View {
     @Environment(\.accessibilityDifferentiateWithoutColor) var differentiateWithoutColor
     @State private var feedback = UINotificationFeedbackGenerator()
     let card: Card
-    
+    var id = UUID()
     @State private var isShowingAnswer = false
     @State private var offset = CGSize.zero
     @State private var prevOffset = CGSize.zero
