@@ -10,7 +10,7 @@ import SwiftUI
 extension View {
     func stacked(at position: Int, in total: Int) -> some View {
         let offset = CGFloat(total - position)
-        return self.offset(CGSize(width: 0, height: offset * 10))
+        return self.offset(CGSize(width: 0, height: offset * CGFloat(total)))
     }
 }
 
@@ -29,7 +29,7 @@ struct ContentView: View {
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     @State private var cards = [Card]()
-    @State private var wrongCards = [Card]()
+    
     var body: some View {
         ZStack {
             Image(decorative: "background")
@@ -79,26 +79,30 @@ struct ContentView: View {
                 }
                 
                 ZStack {
-                    ForEach(0..<self.cards.count, id: \.self) {index in
-                        CardView(card: self.cards[index],
+                    ForEach(self.cards) {card in
+                        CardView(card: card,
                         removal: {
                             withAnimation {
-                                self.removeCard(at: index, isWrong: false)
+                                self.removeCard(with: card, isWrong: false)
                             }
                         },
                         removalWrong: {
+                            if self.moveWrongAnswerBack {
+                                self.removeCard(with: card, isWrong: true)
+                                return
+                            }
                             withAnimation {
-                                self.removeCard(at: index, isWrong: true)
+                                self.removeCard(with: card, isWrong: true)
                             }
                         })
-                        .stacked(at: index, in: self.cards.count)
-                        .allowsHitTesting(index == self.cards.count - 1)
-                        .accessibility(hidden: index < self.cards.count - 1)
+                        .stacked(at: self.getCardIndex(for: card), in: self.cards.count)
+                        .allowsHitTesting(self.getCardIndex(for: card) == self.cards.count - 1)
+                        .accessibility(hidden: self.getCardIndex(for: card) < self.cards.count - 1)
                     }
                 }
                 .allowsHitTesting(timeRemaining > 0)
                 
-                if cards.isEmpty {
+                if cards.count == 0 {
                     Button("Start Again", action: {
                         resetCards(newTime: 100)
                     })
@@ -115,8 +119,9 @@ struct ContentView: View {
                     Spacer()
                     HStack {
                         Button(action: {
+                            
                             withAnimation {
-                                self.removeCard(at: self.cards.count - 1, isWrong: true)
+                                self.removeCard(with: self.cards[self.cards.count - 1], isWrong: true)
                             }
                         }) {
                             Image(systemName: "xmark.circle")
@@ -130,7 +135,7 @@ struct ContentView: View {
                         
                         Button(action: {
                             withAnimation {
-                                self.removeCard(at: self.cards.count - 1, isWrong: false)
+                                self.removeCard(with: self.cards[self.cards.count - 1], isWrong: false)
                             }
                         }) {
                             Image(systemName: "checkmark.circle")
@@ -145,7 +150,16 @@ struct ContentView: View {
                     .font(.title)
                 }
             }
-        }.onReceive(timer) {timer in
+        }
+        .sheet(isPresented: $showingEditScreen, onDismiss: {
+            resetCards(newTime: 100)
+            if isShowingSettingsSheet {
+                self.isShowingSettingsSheet = false
+            }
+        }) {
+           self.isShowingSettingsSheet ?  AnyView(SettingsView(moveWrongCardBack: $moveWrongAnswerBack)) :  AnyView(EditCardsView())
+        }
+        .onReceive(timer) {timer in
             guard self.isActive else { return }
             self.feedback.prepare()
             if self.timeRemaining > 0 {
@@ -168,17 +182,18 @@ struct ContentView: View {
                 self.isActive = true
             }
         })
-        .sheet(isPresented: $showingEditScreen, onDismiss: {
-            resetCards(newTime: 100)
-            if isShowingSettingsSheet {
-                self.isShowingSettingsSheet = false
-            }
-        }) {
-           self.isShowingSettingsSheet ?  AnyView(SettingsView(moveWrongCardBack: $moveWrongAnswerBack)) :  AnyView(EditCardsView())
-        }
+        
         .onAppear(perform: {
             resetCards(newTime: 100)
         })
+    }
+    
+    func printListing() {
+        var index = 0
+        for card in self.cards {
+            print("\(index): \(card.prompt)")
+            index += 1
+        }
     }
     
     func loadSettings() {
@@ -191,15 +206,7 @@ struct ContentView: View {
     }
     
     func loadData() {
-        if self.wrongCards.count > 0 {
-            print("Cards empty. Wrong cards count = \(self.wrongCards.count)")
-            self.cards = [Card]()
-            self.cards.append(contentsOf: self.wrongCards)
-            self.wrongCards = [Card]()
-            print("Cards count now: \(self.cards.count)\n")
-            return
-        }
-        
+        print("Loading data")
         if let data = UserDefaults.standard.data(forKey: EditCardsView.FLASH_KEY) {
             if let decoded = try? JSONDecoder().decode([Card].self, from: data) {
                 self.cards = decoded
@@ -214,30 +221,28 @@ struct ContentView: View {
         self.isActive = true
     }
     
-    func removeCard(at index: Int, isWrong: Bool) {
-        print("Cards count = \(self.cards.count). Index is \(index)")
-        guard index >= 0 else { return }
-        print("Passed guard")
+    func getCardIndex(for card: Card) -> Int {
+        return self.cards.lastIndex(where: {$0.id == card.id}) ?? 0
+    }
+    
+    func removeCard(with card: Card, isWrong: Bool) {
+        print("Old cards count: \(self.cards.count)")
+        guard self.cards.contains(card) else { return }
+        let cardCopy = card
         
-        let card = Card(prompt: cards[index].prompt, answer: cards[index].answer)
-        
+        self.cards.remove(at: self.getCardIndex(for: card))
         if self.moveWrongAnswerBack && isWrong {
-            print("Adding to wrong cards")
-            self.wrongCards.append(card)
-            print("Wrong cards count: \(self.wrongCards.count)")
-        }
-        
-        self.cards.remove(at: index)
-        
-        if self.cards.count == 0 {
-            if wrongCards.count > 0 {
-                self.resetCards(newTime: self.timeRemaining)
-            } else {
-                self.isActive = false
-            }
+            print("Inserting card with answer \(cardCopy.answer) at 0.")
+            self.cards.insert(cardCopy, at: 0)
         }
         
         print("New Cards count: \(self.cards.count)\n\n")
+        if self.cards.count == 0 {
+                self.isActive = false
+        }
+        
+        printListing()
+        
     }
 }
 
