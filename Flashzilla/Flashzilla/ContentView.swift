@@ -66,6 +66,7 @@ struct ContentView: View {
                     
                     Button(action: {
                             self.isShowingSettingsSheet = true
+                        self.showingEditScreen = true
                          }) {
                              Image(systemName: "pencil.circle")
                                  .padding(10)
@@ -143,11 +144,6 @@ struct ContentView: View {
                     .foregroundColor(.white)
                     .font(.title)
                 }
-                .sheet(isPresented: $isShowingSettingsSheet, onDismiss: {
-                    resetCards(newTime: 100)
-                }) {
-                    SettingsView(moveWrongCardBack: $moveWrongAnswerBack)
-                }
             }
         }.onReceive(timer) {timer in
             guard self.isActive else { return }
@@ -173,9 +169,12 @@ struct ContentView: View {
             }
         })
         .sheet(isPresented: $showingEditScreen, onDismiss: {
-                resetCards(newTime: 100)
+            resetCards(newTime: 100)
+            if isShowingSettingsSheet {
+                self.isShowingSettingsSheet = false
+            }
         }) {
-            EditCardsView()
+           self.isShowingSettingsSheet ?  AnyView(SettingsView(moveWrongCardBack: $moveWrongAnswerBack)) :  AnyView(EditCardsView())
         }
         .onAppear(perform: {
             resetCards(newTime: 100)
@@ -194,7 +193,8 @@ struct ContentView: View {
     func loadData() {
         if self.wrongCards.count > 0 {
             print("Cards empty. Wrong cards count = \(self.wrongCards.count)")
-            self.cards = self.wrongCards
+            self.cards = [Card]()
+            self.cards.append(contentsOf: self.wrongCards)
             self.wrongCards = [Card]()
             print("Cards count now: \(self.cards.count)\n")
             return
