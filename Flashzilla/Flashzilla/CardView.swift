@@ -15,7 +15,9 @@ struct CardView: View {
     
     @State private var isShowingAnswer = false
     @State private var offset = CGSize.zero
+    @State private var prevOffset = CGSize.zero
     var removal: (() -> Void)? = nil
+    var removalWrong: (() -> Void)? = nil
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/, style: /*@START_MENU_TOKEN@*/.continuous/*@END_MENU_TOKEN@*/)
@@ -25,7 +27,7 @@ struct CardView: View {
                 .background(
                     differentiateWithoutColor ? nil :
                     RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/, style: .continuous)
-                            .fill(offset.width > 0 ? Color.green : Color.red)
+                        .fill(offset.width > 0 || (prevOffset.width > 0 && prevOffset.width > offset.width) ? Color.green : Color.red)
                     )
                 .shadow(radius: 10)
             VStack {
@@ -56,16 +58,18 @@ struct CardView: View {
             DragGesture()
                 .onChanged { gesture in
                     self.feedback.prepare()
+                    self.prevOffset = self.offset
                     self.offset = gesture.translation
                 }
                 .onEnded { _ in
                     if (abs(self.offset.width) > 100) {
                         if self.offset.width > 0 {
                             self.feedback.notificationOccurred(.success)
+                            self.removal?()
                         } else {
                             self.feedback.notificationOccurred(.error)
+                            self.removalWrong?()
                         }
-                        self.removal?()
                     } else {
                         self.offset = .zero
                     }

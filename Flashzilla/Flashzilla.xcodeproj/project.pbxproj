@@ -20,6 +20,7 @@
 		55D4548D25D817960043370C /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D4548C25D817960043370C /* Card.swift */; };
 		55D4549025D818C80043370C /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D4548F25D818C80043370C /* CardView.swift */; };
 		55D4549425DB0A460043370C /* EditCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D4549325DB0A460043370C /* EditCardsView.swift */; };
+		55EA645F25DC44960003FAA7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EA645E25DC44960003FAA7 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		55D4548C25D817960043370C /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		55D4548F25D818C80043370C /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		55D4549325DB0A460043370C /* EditCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardsView.swift; sourceTree = "<group>"; };
+		55EA645E25DC44960003FAA7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 				55D4548C25D817960043370C /* Card.swift */,
 				55D4548F25D818C80043370C /* CardView.swift */,
 				55D4549325DB0A460043370C /* EditCardsView.swift */,
+				55EA645E25DC44960003FAA7 /* SettingsView.swift */,
 			);
 			path = Flashzilla;
 			sourceTree = "<group>";
@@ -174,6 +177,7 @@
 				55D4546D25D3246D0043370C /* ContentView.swift in Sources */,
 				55D4548725D617EA0043370C /* MoveToBackgroundExampleView.swift in Sources */,
 				55D4546B25D3246D0043370C /* FlashzillaApp.swift in Sources */,
+				55EA645F25DC44960003FAA7 /* SettingsView.swift in Sources */,
 				55D4547E25D4BD3E0043370C /* HapticsExampleView.swift in Sources */,
 				55D4547B25D3737B0043370C /* GestureExampleView.swift in Sources */,
 			);
